@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+/* ------------------------------------------------------------------
+   Design tokens
+   Canvas   #EDE8DE  unbleached canvas — main background
+   Chalk    #F7F4EC  lighter panel background
+   Ink      #1C1B19  near-black, warm charcoal — text + dark sections
+   Thread   #B4392C  spool-red accent, used like topstitching
+   Tan      #D9CBAE  kraft/tan panel + swatch accent
+   Graphite #6B6660  muted secondary text
+------------------------------------------------------------------- */
+:root {
+    --wl-canvas: #EDE8DE;
+    --wl-chalk: #F7F4EC;
+    --wl-ink: #1C1B19;
+    --wl-thread: #B4392C;
+    --wl-tan: #D9CBAE;
+    --wl-graphite: #6B6660;
+}
+
+.wl-app {
+    font-family: "IBM Plex Sans", sans-serif;
+    background: var(--wl-canvas);
+    color: var(--wl-ink);
+}
+
+.f-display {
+    font-family: "Big Shoulders Display", sans-serif;
+}
+
+.f-mono {
+    font-family: "IBM Plex Mono", monospace;
+}
+
+.bg-ink {
+    background: var(--wl-ink);
+}
+
+.bg-canvas {
+    background: var(--wl-canvas);
+}
+
+.bg-chalk {
+    background: var(--wl-chalk);
+}
+
+.bg-tan {
+    background: var(--wl-tan);
+}
+
+.bg-thread {
+    background: var(--wl-thread);
+}
+
+.text-ink {
+    color: var(--wl-ink);
+}
+
+.text-canvas {
+    color: var(--wl-canvas);
+}
+
+.text-thread {
+    color: var(--wl-thread);
+}
+
+.text-graphite {
+    color: var(--wl-graphite);
+}
+
+.border-ink {
+    border-color: var(--wl-ink);
+}
+
+.border-thread {
+    border-color: var(--wl-thread);
+}
+
+.border-canvas {
+    border-color: var(--wl-canvas);
+}
+
+.wl-app a:focus-visible,
+.wl-app button:focus-visible {
+    outline: 2px solid var(--wl-thread);
+    outline-offset: 2px;
+}
+
+/* Graph-paper texture — ties every section back to the tech-pack idea
+   instead of leaving flat, empty color fields. Faint on purpose. */
+.bg-grid-light {
+    background-image: linear-gradient(rgba(28, 27, 25, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 27, 25, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+.bg-grid-dark {
+    background-image: linear-gradient(rgba(237, 232, 222, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 232, 222, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+/* Hang-tag shadow: a hard offset shadow instead of a blurred grey
+   SaaS-card shadow — reads like a printed tag or spec card. */
+.tag-shadow {
+    box-shadow: 5px 5px 0 var(--wl-ink);
+}
+
+.tag-shadow-thread {
+    box-shadow: 5px 5px 0 var(--wl-thread);
+}
+
+/* Small die-cut "punch hole" corner, like a swing tag */
+.punch-hole {
+    position: relative;
+}
+
+.punch-hole::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--wl-canvas);
+    border: 1px solid rgba(28, 27, 25, 0.25);
+}
+
+/* Hero tech-pack diagram draw-in — the one signature motion moment */
+@keyframes wl-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes wl-fade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wl-line {
+    stroke-dasharray: 1600;
+    stroke-dashoffset: 1600;
+    animation: wl-draw 2.4s ease forwards;
+}
+
+.wl-line-fast {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: wl-draw 1s ease forwards;
+}
+
+.wl-leader {
+    opacity: 0;
+    animation: wl-fade 0.7s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wl-line, .wl-line-fast, .wl-leader {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+        opacity: 1 !important;
+    }
+}
