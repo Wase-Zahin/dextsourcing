@@ -14,9 +14,9 @@ export default function Navbar() {
     return (
         <header className="sticky top-0 z-50 bg-canvas border-b border-ink/10">
             <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
-                <a href="#" className="f-display text-xl font-bold tracking-tight text-ink flex items-center gap-1.5">
-                    WARPLINE
-                    <span className="w-1.5 h-1.5 bg-thread inline-block rounded-full"/>
+                <a href="#" className="f-display text-xl font-bold tracking-tight text-ink flex items-center gap-2.5">
+                    <img src="/dextsourcing.jpeg" alt="Dext Sourcing" className="h-8 w-8"/>
+                    DEXT SOURCING
                 </a>
 
                 <nav className="hidden md:flex items-center gap-8">
