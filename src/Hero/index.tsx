@@ -49,7 +49,7 @@ export default function Hero() {
                         We finish it as a shipment.
                     </h1>
                     <p className="text-canvas/90 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                        Warpline sources fabric, builds samples, and runs production for apparel
+                        Dext Sourcing sources fabric, builds samples, and runs production for apparel
                         brands that need a factory partner who answers the phone — not just one
                         who quotes the lowest unit cost.
                     </p>
