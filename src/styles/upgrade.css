@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&family=Source+Sans+3:wght@400;600&display=swap");
+
+:root {
+    --navy: #163f61;
+    --teal: #0b6e7f;
+    --teal-dark: #0a5563;
+    --ink: #1c2b39;
+    --soft: #33475a;
+    --side: #e4ecf1;
+    --page: #f6f8f9;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Source Sans 3", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--page);
+    -webkit-font-smoothing: antialiased;
+}
+
+.up {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+}
+
+/* Left: giant logo on a calm, flat tint (no fine patterns) */
+.up-mark {
+    display: grid;
+    place-items: center;
+    padding: 3rem;
+    background: var(--side);
+}
+
+.up-logo {
+    width: clamp(240px, 36vw, 540px);
+    height: auto;
+    mix-blend-mode: multiply; /* removes the PNG's white background */
+    animation: up-in .9s ease-out both;
+}
+
+@keyframes up-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Right: message */
+.up-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.75rem;
+    padding: 4rem clamp(1.5rem, 5vw, 5rem);
+    max-width: 44rem;
+}
+
+.up-status {
+    align-self: flex-start;
+    padding: .4rem .9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--teal-dark);
+    background: #dcecef;
+    border-radius: 999px;
+}
+
+h1 {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+    line-height: 1.2;
+    color: var(--navy);
+}
+
+.up-lead {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    max-width: 36rem;
+}
+
+.up-list {
+    list-style: none;
+    display: grid;
+    gap: 1.25rem;
+    max-width: 36rem;
+}
+
+.up-list li {
+    display: grid;
+    gap: .2rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--teal);
+}
+
+.up-list strong {
+    font-size: 1.1rem;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.up-list span {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--soft);
+}
+
+.up-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.05rem;
+    color: var(--soft);
+}
+
+.up-btn {
+    padding: .9rem 1.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--navy);
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.up-btn:hover {
+    background: var(--teal-dark);
+}
+
+.up-btn:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 3px;
+}
+
+.up-foot {
+    font-size: .95rem;
+    color: #4d6070;
+}
+
+@media (max-width: 860px) {
+    .up {
+        grid-template-columns: 1fr;
+    }
+
+    .up-mark {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .up-logo {
+        width: min(72vw, 360px);
+    }
+
+    .up-body {
+        padding: 2.5rem 1.5rem 3rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .up-logo {
+        animation: none;
+    }
+}
