@@ -1,7 +1,7 @@
 import "./styles/upgrade.css";
 import logo from "./assets/dext-logo.jpeg";
 
-const CONTACT_EMAIL = "info@dextsourcing.com";
+const CONTACT_EMAIL = "info@dextsourcingbd.com";
 
 const changes = [
     {
