@@ -3,8 +3,8 @@ import {Mail, MapPin, Phone} from "lucide-react";
 import {px} from "../Img/images.tsx";
 
 const EMAIL = "info@dextsourcingbd.com";
-const PHONE = "+880 1XXX-XXXXXX"; // TODO: replace
-const ADDRESS = "Head Office: Dhaka, Bangladesh"; // TODO: replace
+const PHONE = "+880 1355 330355";
+const ADDRESS = "House# 340. Road# 15, Block# K, Banasree, Dhaka 1219";
 
 const usefulLinks = [
     {label: "FAQ", to: "/faq"},

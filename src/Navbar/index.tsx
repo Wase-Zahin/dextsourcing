@@ -5,8 +5,8 @@ import {ChevronDown, Mail, Menu, Phone, X} from "lucide-react";
 type SubItem = { label: string; to: string };
 type NavItem = { label: string; to: string; children?: SubItem[] };
 
-const EMAIL = "info@dextsourcing.com"; // TODO: replace
-const PHONE = "+880 1XXX-XXXXXX"; // TODO: replace
+const EMAIL = "info@dextsourcingbd.com";
+const PHONE = "+880 1355 330355";
 
 const serviceLinks: SubItem[] = [
     {label: "Research & Development", to: "/services/r-d"},
