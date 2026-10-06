@@ -1,65 +1,124 @@
-import {ClipboardCheck, Factory, type LucideIcon, Ruler, Scissors} from "lucide-react";
-import Reveal from "../Reveal";
+import {Link} from "react-router-dom";
+import {bg} from "../Img/images.tsx";
 
-type ServiceItem = {
-    icon: LucideIcon;
-    title: string;
-    body: string;
-};
-
-const items: ServiceItem[] = [
+const services = [
     {
-        icon: Ruler,
-        title: "Sourcing",
-        body: "We vet mills and cut-and-sew factories across South and East Asia, then match you to partners suited to your fabric, MOQ, and price point.",
+        slug: "r-d",
+        title: "Research & Development",
+        photo: 17710255,
+        text: "We study trends and fabrics so your product is ready before the season starts."
     },
     {
-        icon: Scissors,
-        title: "Development",
-        body: "Pattern making, grading, and sample rounds, tracked against your tech pack line by line until fit and construction are signed off.",
+        slug: "sample-development",
+        title: "Sample Development",
+        photo: 4622203,
+        text: "We always give extra priority to samples that match your tech pack the first time."
     },
     {
-        icon: Factory,
+        slug: "merchandising",
+        title: "Merchandising",
+        photo: 27893058,
+        text: "Our main concern is your order, followed from costing to shipment by one merchandiser."
+    },
+    {
+        slug: "fabric-sourcing",
+        title: "Fabric Sourcing",
+        photo: 36296433,
+        text: "Tested fabrics from trusted mills, matched to your quality and price targets."
+    },
+    {
+        slug: "production",
         title: "Production",
-        body: "Bulk cutting and sewing on a locked timeline, with a production manager on the factory floor for every run.",
+        photo: 31031120,
+        text: "Orders placed with compliant factories and tracked closely every day."
     },
     {
-        icon: ClipboardCheck,
-        title: "Inspection",
-        body: "AQL-based inspection before goods leave the factory, so problems get caught on the line, not in your warehouse.",
+        slug: "qa-and-qc",
+        title: "QA and QC",
+        photo: 31251573,
+        text: "A team of experienced inspectors checks inline and final quality to your AQL."
+    },
+    {
+        slug: "delivery-and-shipment",
+        title: "Delivery and Shipment",
+        photo: 3057960,
+        text: "Proper packing and on-time goods delivery to your forwarder or port."
+    },
+    {
+        slug: "knitting",
+        title: "Knitting",
+        photo: 31251581,
+        text: "Knitting factories equipped for jersey, rib, fleece and sweater panels."
+    },
+    {
+        slug: "embroidery",
+        title: "Embroidery",
+        photo: 29107942,
+        text: "Logos and artwork stitched with consistent quality across every piece."
+    },
+    {
+        slug: "dying-washing",
+        title: "Garment Dyeing & Wash",
+        photo: 37270879,
+        text: "Dyeing and wash finishes tested for color fastness and feel."
+    },
+    {
+        slug: "printing",
+        title: "Printing",
+        photo: 17609847,
+        text: "Screen, digital and pigment printing matched to your approved artwork."
+    },
+    {
+        slug: "trimming-accessories",
+        title: "Trimming & Accessories",
+        photo: 35285958,
+        text: "Labels, buttons, zippers and packaging sourced together with the garment."
     },
 ];
 
 export default function Services() {
     return (
-        <section id="services" className="bg-canvas py-20 md:py-28">
-            <div className="max-w-6xl mx-auto px-6 lg:px-8">
-                <Reveal className="max-w-xl mb-14">
-                    <h2 className="f-display font-bold text-3xl md:text-4xl leading-tight mb-4">
-                        What happens between your idea and your inventory
-                    </h2>
-                    <p className="text-graphite text-base leading-relaxed">
-                        Four capabilities, one point of contact — you're never handed off between departments.
+        <section className="bg-[#F2F6F9] py-20 lg:py-28">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-3xl text-center">
+                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#00707F]">
+                        Development, Production &amp; Delivery
                     </p>
-                </Reveal>
-
-                <div className="divide-y divide-ink/10 border-t border-b border-ink/10">
-                    {items.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <div
-                                key={item.title}
-                                className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4 md:gap-10 py-8 border-l-2 border-thread pl-6 md:pl-8 hover:bg-chalk/60 transition-colors"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <Icon size={20} className="text-thread shrink-0"/>
-                                    <h3 className="f-display font-semibold text-xl">{item.title}</h3>
-                                </div>
-                                <p className="text-ink/70 leading-relaxed max-w-xl">{item.body}</p>
-                            </div>
-                        );
-                    })}
+                    <h2 className="mt-4 font-['Playfair_Display',serif] text-3xl font-bold leading-tight text-[#1B4A72] sm:text-4xl lg:text-5xl">
+                        Dext Sourcing Ensures the Best Production From Every Angle
+                    </h2>
+                    <p className="mt-5 leading-relaxed text-slate-600">
+                        Dext Sourcing is the largest peer-to-peer comparison initiative in the textile industry. It
+                        tracks the apparel material and home textile sector’s progress.
+                    </p>
                 </div>
+
+                <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {services.map((s) => (
+                        <li key={s.slug}
+                            className="group overflow-hidden bg-white shadow-sm transition-shadow hover:shadow-xl">
+                            <Link to={`/services/${s.slug}`} className="block h-full">
+                                <div className="relative aspect-[4/3] overflow-hidden">
+                                    <div
+                                        className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
+                                        style={{backgroundImage: bg(s.photo, 800)}}
+                                        role="img"
+                                        aria-label={s.title}
+                                    />
+                                    <div
+                                        className="absolute inset-0 bg-gradient-to-t from-[#10304D]/70 to-transparent"/>
+                                    <h3 className="absolute inset-x-0 bottom-0 p-5 font-['Playfair_Display',serif] text-xl font-bold text-white">
+                                        {s.title}
+                                    </h3>
+                                </div>
+                                <div
+                                    className="border-b-4 border-transparent p-5 transition-colors group-hover:border-[#00707F]">
+                                    <p className="text-sm leading-relaxed text-slate-600">{s.text}</p>
+                                </div>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </section>
     );

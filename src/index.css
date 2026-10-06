@@ -1,79 +1,198 @@
 @import "tailwindcss";
 
-/*@tailwind base;*/
-/*@tailwind components;*/
-/*@tailwind utilities;*/
+/* Animations and small global styles for Dext Sourcing.
+   Imported once from App.tsx. All motion is switched off for reduced-motion users. */
 
-/*:root {*/
-/*    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;*/
-/*    line-height: 1.5;*/
-/*    font-weight: 400;*/
+html {
+    scroll-behavior: smooth;
+}
 
-/*    color-scheme: light dark;*/
-/*    color: rgba(255, 255, 255, 0.87);*/
-/*    background-color: #242424;*/
+/* Scroll reveal: elements start hidden and get .is-in when they enter the viewport */
+.dx-reveal {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--dx-delay, 0ms);
+    will-change: opacity, transform;
+}
 
-/*    font-synthesis: none;*/
-/*    text-rendering: optimizeLegibility;*/
-/*    -webkit-font-smoothing: antialiased;*/
-/*    -moz-osx-font-smoothing: grayscale;*/
-/*}*/
+.dx-reveal[data-dir="left"] {
+    transform: translate3d(-44px, 0, 0);
+}
 
-/*a {*/
-/*    font-weight: 500;*/
-/*    color: #646cff;*/
-/*    text-decoration: inherit;*/
-/*}*/
+.dx-reveal[data-dir="right"] {
+    transform: translate3d(44px, 0, 0);
+}
 
-/*a:hover {*/
-/*    color: #535bf2;*/
-/*}*/
+.dx-reveal[data-dir="zoom"] {
+    transform: scale(0.94);
+}
 
-/*body {*/
-/*    margin: 0;*/
-/*    display: flex;*/
-/*    !*place-items: center;*!*/
-/*    min-width: 320px;*/
-/*    min-height: 100vh;*/
-/*}*/
+.dx-reveal.is-in {
+    opacity: 1;
+    transform: none;
+}
 
-/*h1 {*/
-/*    font-size: 3.2em;*/
-/*    line-height: 1.1;*/
-/*}*/
+/* One-off entrance used by hero text and page headers */
+@keyframes dx-rise {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 26px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
 
-/*button {*/
-/*    border-radius: 8px;*/
-/*    border: 1px solid transparent;*/
-/*    padding: 0.6em 1.2em;*/
-/*    font-size: 1em;*/
-/*    font-weight: 500;*/
-/*    font-family: inherit;*/
-/*    background-color: #1a1a1a;*/
-/*    cursor: pointer;*/
-/*    transition: border-color 0.25s;*/
-/*}*/
+.dx-rise {
+    animation: dx-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--dx-delay, 0ms);
+}
 
-/*button:hover {*/
-/*    border-color: #646cff;*/
-/*}*/
+/* Route change */
+@keyframes dx-page {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
 
-/*button:focus,*/
-/*button:focus-visible {*/
-/*    outline: 4px auto -webkit-focus-ring-color;*/
-/*}*/
+.dx-page {
+    animation: dx-page 0.5s ease-out both;
+}
 
-/*@media (prefers-color-scheme: dark) {*/
-/*    :root {*/
-/*        color: #213547;*/
-/*        background-color: #ffffff;*/
-/*    }*/
+/* Mobile menu */
+@keyframes dx-drop {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -8px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
 
-/*    a:hover {*/
-/*        color: #747bff;*/
-/*    }*/
+.dx-drop {
+    animation: dx-drop 0.25s ease-out both;
+}
 
-/*    button {*/
-/*        background-color: #f9f9f9;*/
-/*    }*/
-/*}*/
+/* Infinite marquee (content is rendered twice, so -50% loops seamlessly) */
+@keyframes dx-marquee {
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+.dx-marquee {
+    animation: dx-marquee 55s linear infinite;
+}
+
+.dx-marquee-rev {
+    animation: dx-marquee 70s linear infinite reverse;
+}
+
+.dx-marquee-wrap:hover .dx-marquee,
+.dx-marquee-wrap:hover .dx-marquee-rev {
+    animation-play-state: paused;
+}
+
+/* Gentle float for the badge on the About image */
+@keyframes dx-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, -10px, 0);
+    }
+}
+
+.dx-float {
+    animation: dx-float 5s ease-in-out infinite;
+}
+
+/* Hero progress bar fill for the active slide indicator */
+@keyframes dx-fill {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.dx-fill {
+    transform-origin: left center;
+    animation: dx-fill 6s linear both;
+}
+
+/* Subtle woven-thread texture, a nod to the product. */
+.dx-weave {
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.045) 0 2px, transparent 2px 11px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.045) 0 2px, transparent 2px 11px);
+}
+
+.dx-weave-light {
+    background-image: repeating-linear-gradient(45deg, rgba(27, 74, 114, 0.05) 0 2px, transparent 2px 11px),
+    repeating-linear-gradient(-45deg, rgba(27, 74, 114, 0.05) 0 2px, transparent 2px 11px);
+}
+
+/* Button shine on hover */
+.dx-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.dx-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+}
+
+.dx-shine:hover::after {
+    transform: translateX(120%);
+}
+
+:focus-visible {
+    outline: 2px solid #00707f;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .dx-reveal,
+    .dx-reveal.is-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .dx-rise,
+    .dx-page,
+    .dx-drop,
+    .dx-marquee,
+    .dx-marquee-rev,
+    .dx-float,
+    .dx-fill {
+        animation: none;
+    }
+
+    .dx-shine::after {
+        display: none;
+    }
+}

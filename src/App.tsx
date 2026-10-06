@@ -1,62 +1,72 @@
-import "./styles/upgrade.css";
-import logo from "./assets/dext-logo.jpeg";
+import {useEffect} from "react";
+import {Route, Routes, useLocation} from "react-router-dom";
 
-const CONTACT_EMAIL = "info@dextsourcingbd.com";
+import Navbar from "./Navbar";
+import Hero from "./Hero";
+import About from "./About";
+import Stats from "./Stats";
+import Services from "./Services";
+import Compliance from "./Compliance";
+import Testimonials from "./Testimonials";
+import AtAGlance from "./AtAGlance";
+import Footer from "./Footer";
 
-const changes = [
-    {
-        title: "Clearer sourcing services",
-        text: "Sourcing, sampling, production follow-up and quality control, explained in one place.",
-    },
-    {
-        title: "Easier product enquiries",
-        text: "Tell us what you need and get to the right person faster.",
-    },
-    {
-        title: "A stronger showcase",
-        text: "Better presentation of our partners, materials and finished work.",
-    },
-];
+function ScrollToTop() {
+    const {pathname} = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
+}
+
+function Home() {
+    return (
+        <>
+            <Hero/>
+            <About/>
+            <Stats/>
+            <Services/>
+            <Compliance/>
+            <Testimonials/>
+            <AtAGlance/>
+        </>
+    );
+}
+
+// Temporary page for every route you haven't built yet (/about, /services/r-d ...).
+function PagePlaceholder() {
+    const {pathname} = useLocation();
+    const title = pathname
+        .split("/")
+        .filter(Boolean)
+        .pop()
+        ?.replace(/-/g, " ");
+
+    return (
+        <section className="mx-auto w-full max-w-7xl px-4 py-32 text-center sm:px-6 lg:px-8">
+            <h1 className="font-['Playfair_Display',serif] text-4xl capitalize text-[#1B4A72] sm:text-5xl">
+                {title ?? "Page not found"}
+            </h1>
+            <p className="mx-auto mt-4 max-w-md text-slate-600">
+                This page is not built yet.
+            </p>
+        </section>
+    );
+}
 
 export default function App() {
     return (
-        <div className="up">
-            <section className="up-mark" aria-label="Dext Sourcing">
-                <img className="up-logo" src={logo} alt="Dext Sourcing logo"/>
-            </section>
-
-            <main className="up-body">
-                <p className="up-status">
-                    <span className="up-dot" aria-hidden="true"/>
-                    Website upgrade in progress
-                </p>
-
-                <h1>We're building a better Dext Sourcing website.</h1>
-
-                <p className="up-lead">
-                    Our website is getting a full upgrade so it's easier to see what we do and
-                    to work with us. Our team is still fully available for sourcing and
-                    production enquiries in the meantime.
-                </p>
-
-                <ul className="up-list">
-                    {changes.map((c) => (
-                        <li key={c.title}>
-                            <strong>{c.title}</strong>
-                            <span>{c.text}</span>
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="up-cta">
-                    <a className="up-btn" href={`mailto:${CONTACT_EMAIL}`}>
-                        Email our team
-                    </a>
-                    <span>{CONTACT_EMAIL}</span>
-                </div>
-
-                <p className="up-foot">© {new Date().getFullYear()} Dext Sourcing</p>
+        <div id="top"
+             className="flex min-h-screen flex-col bg-white font-['Manrope',sans-serif] text-[#14212B] antialiased">
+            <ScrollToTop/>
+            <Navbar/>
+            <main className="flex-1">
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="*" element={<PagePlaceholder/>}/>
+                </Routes>
             </main>
+            <Footer/>
         </div>
     );
 }
