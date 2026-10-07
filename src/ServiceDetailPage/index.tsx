@@ -1,8 +1,8 @@
 import {Link, useParams} from "react-router-dom";
 import {ArrowLeft, ArrowRight, Check} from "lucide-react";
-import PageHeader from "../components/PageHeader";
-import CertMarquee from "../components/CertMarquee";
-import {Reveal} from "../components/Reveal";
+import PageHeader from "../components/pageheader.tsx";
+import CertMarquee from "../components/certmarquee.tsx";
+import {Reveal} from "../components/reveal.tsx";
 import {bg} from "../Img/images.tsx";
 import {getService, services} from "../components/site";
 import NotFoundPage from "../NotFoundPage";
