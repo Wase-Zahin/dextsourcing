@@ -1,6 +1,3 @@
-// Single source of truth for contact details, services, products, FAQ and blog.
-// TODO: replace the placeholder contact details with the real ones.
-
 export const SITE = {
     name: "Dext Sourcing",
     email: "info@dextsourcingbd.com",

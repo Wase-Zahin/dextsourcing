@@ -11,7 +11,6 @@ const usefulLinks = [
     {label: "Services", to: "/services"},
     {label: "Contact Us", to: "/contact"},
     {label: "Privacy Policy", to: "/privacy-policy"},
-    {label: "Blog", to: "/blog"},
     {label: "Compliance & Ethics", to: "/compliance-ethics"},
 ];
 
