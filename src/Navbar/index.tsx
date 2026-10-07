@@ -26,8 +26,9 @@ const serviceLinks: SubItem[] = [
 const productLinks: SubItem[] = [
     {label: "Woven", to: "/products/woven"},
     {label: "Knit", to: "/products/knit"},
+    {label: "Denim", to: "/products/denim"},
     {label: "Sweater", to: "/products/sweater"},
-    {label: "Homewear & Others", to: "/products/homewear-other"},
+    {label: "Home Textile & Others", to: "/products/hometextile-other"},
 ];
 
 const nav: NavItem[] = [
@@ -84,7 +85,7 @@ export default function Navbar() {
                 <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                     <Link to="/" onClick={close} className="flex items-center gap-3 py-2"
                           aria-label="Dext Sourcing home">
-                        <img src="/dext-logo.jpeg" alt="" className="h-14 w-auto"/>
+                        <img src="/dextsourcing.jpeg" alt="" className="h-14 w-auto"/>
                         <span
                             className="font-['Playfair_Display',serif] text-2xl font-bold tracking-tight text-[#1B4A72]">
               Dext <span className="text-[#00707F]">Sourcing</span>

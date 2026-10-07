@@ -15,7 +15,7 @@ export default function About() {
                         Dext Sourcing is a leading multinational apparel buying hub, sourcing company, manufacturer
                         and committed exporter on woven, denim, knit, sweater etc. We produce best quality garments
                         for all of our internationally reputed buyers/importers and departmental chain stores from
-                        US, RU, EU, etc. markets. Since our establishment, we have developed long term trade
+                        US, EU, UK, RU etc. markets. Since our establishment, we have developed long term trade
                         relationships with most of our potential customers &amp; earned trust in their respective
                         markets.
                     </p>

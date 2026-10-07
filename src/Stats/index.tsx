@@ -1,9 +1,7 @@
 const stats = [
-    {value: "40+", label: "Trusted Clients"},
-    {value: "5000", label: "Shipments", note: "More than"},
-    {value: "13+", label: "Years Of Experience"},
-    {value: "45", label: "Visited Conference"},
-    {value: "13+", label: "Compliance Factories"},
+    {value: "15+", label: "Trusted Clients"},
+    {value: "7+", label: "Years Of Experience"},
+    {value: "14+", label: "Compliance Factories"},
     {value: "1M", label: "pcs/month production"},
 ];
 
@@ -18,13 +16,12 @@ export default function Stats() {
                     </h2>
                 </div>
 
-                <dl className="mt-12 grid grid-cols-2 gap-y-10 md:grid-cols-3 lg:grid-cols-6 lg:gap-y-0">
+                <dl className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-y-10 lg:gap-y-0">
                     {stats.map((s, i) => (
                         <div
                             key={s.label}
                             className={`flex flex-col items-center px-4 text-center ${i > 0 ? "lg:border-l lg:border-white/20" : ""}`}
                         >
-                            <span className="h-4 text-xs text-white/60">{s.note ?? ""}</span>
                             <dd className="order-2 font-['Playfair_Display',serif] text-5xl font-bold">{s.value}</dd>
                             <dt className="order-3 mt-2 text-sm font-semibold text-white/80">{s.label}</dt>
                         </div>
