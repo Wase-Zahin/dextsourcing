@@ -1,0 +1,84 @@
+.cert-logo-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 24px 0;
+    background: #F2F6F9;
+}
+
+.cert-logo-track {
+    display: flex;
+    width: max-content;
+    animation: cert-logo-scroll 50s linear infinite;
+    will-change: transform;
+}
+
+.cert-logo-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 56px;
+    padding-right: 56px;
+}
+
+.cert-logo-item {
+    display: flex;
+    width: 130px;
+    height: 90px;
+    flex: 0 0 130px;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-logo-item img {
+    display: block;
+    max-width: 125px;
+    max-height: 76px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+
+    /* Preserve original logo colors at all times */
+    filter: none;
+    opacity: 1;
+
+    transition: transform 0.25s ease;
+}
+
+.cert-logo-item img:hover {
+    transform: scale(1.06);
+}
+
+@keyframes cert-logo-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cert-logo-track {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .cert-logo-group {
+        gap: 32px;
+        padding-right: 32px;
+    }
+
+    .cert-logo-item {
+        width: 100px;
+        height: 76px;
+        flex-basis: 100px;
+    }
+
+    .cert-logo-item img {
+        max-width: 96px;
+        max-height: 64px;
+    }
+}

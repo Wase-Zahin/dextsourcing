@@ -159,7 +159,7 @@ export default function AtAGlance() {
                                 <img
                                     src={cert.logo}
                                     alt={cert.name}
-                                    className="max-h-16 max-w-[120px] object-contain grayscale opacity-80 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                                    className="max-h-16 max-w-[120px] object-contain opacity-100 transition-transform duration-300 hover:scale-105"
                                     loading="lazy"
                                 />
                             </div>
@@ -175,7 +175,7 @@ export default function AtAGlance() {
                                     src={cert.logo}
                                     alt=""
                                     aria-hidden="true"
-                                    className="max-h-16 max-w-[120px] object-contain grayscale opacity-80 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                                    className="max-h-16 max-w-[120px] object-contain opacity-100 transition-transform duration-300 hover:scale-105"
                                     loading="lazy"
                                 />
                             </div>

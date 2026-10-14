@@ -1,6 +1,6 @@
 const stats = [
     {value: "15+", label: "Trusted Clients"},
-    {value: "7+", label: "Years Of Experience"},
+    {value: "10+", label: "Years Of Experience"},
     {value: "14+", label: "Compliance Factories"},
     {value: "1M", label: "pcs/month production"},
 ];
