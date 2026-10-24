@@ -1,17 +1,82 @@
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import {ArrowRight, Clock, Shirt} from "lucide-react";
+import {ArrowLeft, ChevronLeft, ChevronRight, X} from "lucide-react";
 import PageHeader from "../components/pageheader.tsx";
 import {Reveal} from "../components/reveal.tsx";
-import {bg} from "../Img/images.tsx";
-import {getProduct, products} from "../components/site.ts";
-import NotFoundPage from "../NotFoundPage";
+import {getProduct} from "../components/site.ts";
 
-export default function ProductCategoryPage() {
+import {tshirt} from "../assets/img/tshirt";
+import {fleece} from "../assets/img/fleece";
+
+type Group = { label: string; images: string[] };
+
+// Add more groups/categories here as you add image folders.
+const galleries: Record<string, Group[]> = {
+    knit: [
+        {label: "T-shirts", images: tshirt},
+        {label: "Fleece", images: fleece},
+    ],
+    woven: [],
+    sweater: [],
+    "homewear-other": [],
+};
+
+export default function ProductPage() {
     const {slug} = useParams();
     const product = getProduct(slug);
-    if (!product) return <NotFoundPage/>;
+    const groups = (slug && galleries[slug]) || [];
 
-    const others = products.filter((p) => p.slug !== product.slug);
+    const [active, setActive] = useState<string>("All");
+    const [lightbox, setLightbox] = useState<number | null>(null);
+
+    const images = useMemo(() => {
+        if (active === "All") return groups.flatMap((g) => g.images.map((src) => ({src, label: g.label})));
+        const g = groups.find((x) => x.label === active);
+        return (g?.images ?? []).map((src) => ({src, label: g!.label}));
+    }, [groups, active]);
+
+    const total = groups.reduce((n, g) => n + g.images.length, 0);
+
+    useEffect(() => {
+        setActive("All");
+        setLightbox(null);
+    }, [slug]);
+
+    const close = useCallback(() => setLightbox(null), []);
+    const prev = useCallback(
+        () => setLightbox((i) => (i === null ? i : (i - 1 + images.length) % images.length)),
+        [images.length],
+    );
+    const next = useCallback(
+        () => setLightbox((i) => (i === null ? i : (i + 1) % images.length)),
+        [images.length],
+    );
+
+    useEffect(() => {
+        if (lightbox === null) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") close();
+            if (e.key === "ArrowLeft") prev();
+            if (e.key === "ArrowRight") next();
+        };
+        document.body.style.overflow = "hidden";
+        window.addEventListener("keydown", onKey);
+        return () => {
+            document.body.style.overflow = "";
+            window.removeEventListener("keydown", onKey);
+        };
+    }, [lightbox, close, prev, next]);
+
+    if (!product) {
+        return (
+            <section className="bg-white py-32 text-center">
+                <h1 className="font-['Playfair_Display',serif] text-3xl font-bold text-[#1B4A72]">Product not found</h1>
+                <Link to="/products" className="mt-6 inline-block font-semibold text-[#00707F]">
+                    Back to products
+                </Link>
+            </section>
+        );
+    }
 
     return (
         <>
@@ -22,98 +87,116 @@ export default function ProductCategoryPage() {
                 crumbs={[{label: "Products", to: "/products"}, {label: product.title}]}
             />
 
-            <section className="bg-white py-20 lg:py-28">
-                <div
-                    className="mx-auto grid w-full max-w-7xl items-start gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
-                    <Reveal dir="left">
-                        <div
-                            role="img"
-                            aria-label={product.title}
-                            className="aspect-[4/3] w-full bg-cover bg-center shadow-xl"
-                            style={{backgroundImage: bg(product.photo, 1200)}}
-                        />
-                    </Reveal>
+            <section className="bg-white py-16 lg:py-24">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {total === 0 ? (
+                        <p className="py-20 text-center text-slate-500">Photos for this category are coming soon.</p>
+                    ) : (
+                        <>
+                            {groups.length > 1 && (
+                                <div className="mb-10 flex flex-wrap justify-center gap-3">
+                                    {[{label: "All", count: total}, ...groups.map((g) => ({
+                                        label: g.label,
+                                        count: g.images.length
+                                    }))].map((t) => (
+                                        <button
+                                            key={t.label}
+                                            type="button"
+                                            onClick={() => setActive(t.label)}
+                                            className={`px-5 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
+                                                active === t.label
+                                                    ? "bg-[#1B4A72] text-white"
+                                                    : "bg-slate-100 text-[#1B4A72] hover:bg-slate-200"
+                                            }`}
+                                        >
+                                            {t.label} <span className="opacity-60">({t.count})</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
 
-                    <Reveal dir="right">
-                        <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#00707F]">{product.title}</p>
-                        <h2 className="mt-4 font-['Playfair_Display',serif] text-3xl font-bold leading-tight text-[#1B4A72] sm:text-4xl">
-                            {product.tagline}
-                        </h2>
-                        <p className="mt-5 text-lg leading-relaxed text-slate-600">{product.intro}</p>
+                            <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+                                {images.map((img, i) => (
+                                    <Reveal as="li" key={img.src} delay={(i % 4) * 60}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setLightbox(i)}
+                                            className="group relative block aspect-[3/4] w-full overflow-hidden bg-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                                            aria-label={`View ${img.label} photo ${i + 1}`}
+                                        >
+                                            <img
+                                                src={img.src}
+                                                alt={`${product.title} - ${img.label} ${i + 1}`}
+                                                loading="lazy"
+                                                decoding="async"
+                                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
+                                            />
+                                        </button>
+                                    </Reveal>
+                                ))}
+                            </ul>
+                        </>
+                    )}
 
-                        <div className="mt-8 flex gap-4 border-l-4 border-[#00707F] bg-[#F2F6F9] p-5">
-                            <Clock size={22} aria-hidden className="mt-0.5 shrink-0 text-[#00707F]"/>
-                            <div>
-                                <p className="font-bold text-[#1B4A72]">Normal shipment period</p>
-                                <p className="mt-1 text-slate-600">{product.leadTime}</p>
-                            </div>
-                        </div>
-
+                    <div className="mt-14 text-center">
                         <Link
-                            to="/contact"
-                            className="dx-shine group mt-8 inline-flex items-center gap-2 bg-[#00707F] px-8 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#1B4A72]"
+                            to="/products"
+                            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[#1B4A72] transition-colors hover:text-[#00707F]"
                         >
-                            Request a quote
-                            <ArrowRight size={16} aria-hidden
-                                        className="transition-transform group-hover:translate-x-1"/>
+                            <ArrowLeft size={16} aria-hidden/> All products
                         </Link>
-                    </Reveal>
+                    </div>
                 </div>
             </section>
 
-            <section className="dx-weave-light bg-[#F2F6F9] py-20 lg:py-24">
-                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <Reveal className="text-center">
-                        <h2 className="font-['Playfair_Display',serif] text-3xl font-bold text-[#1B4A72] sm:text-4xl">What
-                            we make in {product.title}</h2>
-                    </Reveal>
-                    <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {product.items.map((item, i) => (
-                            <Reveal
-                                as="li"
-                                key={item}
-                                delay={(i % 4) * 80}
-                                className="group flex items-center gap-4 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                            >
-                <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center bg-[#F2F6F9] text-[#00707F] transition-colors group-hover:bg-[#00707F] group-hover:text-white">
-                  <Shirt size={22} aria-hidden/>
-                </span>
-                                <span className="font-semibold text-[#14212B]">{item}</span>
-                            </Reveal>
-                        ))}
-                    </ul>
+            {lightbox !== null && images[lightbox] && (
+                <div
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+                    role="dialog"
+                    aria-modal="true"
+                    onClick={close}
+                >
+                    <button
+                        type="button"
+                        onClick={close}
+                        aria-label="Close"
+                        className="absolute right-4 top-4 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+                    >
+                        <X size={22}/>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            prev();
+                        }}
+                        aria-label="Previous"
+                        className="absolute left-3 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 sm:left-6"
+                    >
+                        <ChevronLeft size={26}/>
+                    </button>
+                    <img
+                        src={images[lightbox].src}
+                        alt={`${product.title} - ${images[lightbox].label}`}
+                        className="max-h-[88vh] max-w-full object-contain"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            next();
+                        }}
+                        aria-label="Next"
+                        className="absolute right-3 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 sm:right-6"
+                    >
+                        <ChevronRight size={26}/>
+                    </button>
+                    <p className="absolute bottom-4 text-sm text-white/70">
+                        {lightbox + 1} / {images.length}
+                    </p>
                 </div>
-            </section>
-
-            <section className="bg-white py-20">
-                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <h2 className="font-['Playfair_Display',serif] text-2xl font-bold text-[#1B4A72]">Other
-                        categories</h2>
-                    <ul className="mt-8 grid gap-6 md:grid-cols-3">
-                        {others.map((p, i) => (
-                            <Reveal as="li" key={p.slug} delay={i * 100} className="group">
-                                <Link to={`/products/${p.slug}`} className="relative block overflow-hidden">
-                                    <div
-                                        role="img"
-                                        aria-label={p.title}
-                                        className="aspect-[4/3] w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110 motion-reduce:transition-none"
-                                        style={{backgroundImage: bg(p.photo, 800)}}
-                                    />
-                                    <div
-                                        className="absolute inset-0 bg-gradient-to-t from-[#10304D]/85 to-transparent"/>
-                                    <span
-                                        className="absolute bottom-4 left-5 flex items-center gap-2 font-['Playfair_Display',serif] text-xl font-bold text-white">
-                    {p.title}
-                                        <ArrowRight size={18} aria-hidden
-                                                    className="transition-transform group-hover:translate-x-1.5"/>
-                  </span>
-                                </Link>
-                            </Reveal>
-                        ))}
-                    </ul>
-                </div>
-            </section>
+            )}
         </>
     );
 }
