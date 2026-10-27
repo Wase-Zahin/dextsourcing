@@ -329,6 +329,25 @@ export const products: Product[] = [
         leadTime: "60-70 days after L/C or T/T receipt. Repeat orders can be optimized to 30-40 days.",
     },
     {
+        slug: "denim",
+        title: "Denim",
+        photo: 32641555,
+        tagline: "Jeans, jackets, shorts and denim apparel",
+        intro:
+            "Our denim production capabilities cover a wide range of denim garments, combining quality construction, precise fits and specialized washing techniques to meet your brand's requirements.",
+        items: [
+            "Denim jeans",
+            "Denim jackets",
+            "Denim shorts",
+            "Denim skirts",
+            "Denim shirts",
+            "Denim dresses",
+            "Denim outerwear",
+            "Custom-washed and distressed denim"
+        ],
+        leadTime: "80-90 days after L/C or T/T receipt, depending on order quantity, fabric availability, washes and finishing requirements."
+    },
+    {
         slug: "sweater",
         title: "Sweater",
         photo: 17609847,
@@ -339,8 +358,8 @@ export const products: Product[] = [
         leadTime: "110-120 days after L/C or T/T receipt, depending on yarn, quantity and colors.",
     },
     {
-        slug: "homewear-other",
-        title: "Homewear & Others",
+        slug: "hometextile-other",
+        title: "Home Textile & Others",
         photo: 37270879,
         tagline: "Loungewear, home textiles, jute and leather",
         intro:

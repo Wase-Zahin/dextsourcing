@@ -7,6 +7,29 @@ import {getProduct} from "../components/site.ts";
 
 import {tshirt} from "../assets/img/tshirt";
 import {fleece} from "../assets/img/fleece";
+import {knit_others} from "../assets/img/knit-others";
+
+import {woven_cargo} from "../assets/img/woven-cargo";
+import {woven_others} from "../assets/img/woven-others";
+import {woven_shirt} from "../assets/img/woven-shirt";
+import {woven_jacket} from "../assets/img/woven-jacket";
+import {woven_trousers} from "../assets/img/woven-trousers";
+import {woven_shorts} from "../assets/img/woven-shorts";
+
+import {sweater_baby} from "../assets/img/sweater-baby";
+import {sweater_long} from "../assets/img/sweater-long";
+import {sweater_others} from "../assets/img/sweater-others";
+
+import {denim_jacket} from "../assets/img/denim-jacket";
+import {denim_ladies} from "../assets/img/denim-ladies";
+import {denim_long} from "../assets/img/denim-long";
+import {denim_shorts} from "../assets/img/denim-shorts";
+import {denim_pant} from "../assets/img/denim-pant";
+import {denim_others} from "../assets/img/denim-others";
+
+import {towel_terry_kitchen} from "../assets/img/towel-terry_kitchen";
+import {towel_others} from "../assets/img/towel-others";
+import {towel_bed_spread} from "../assets/img/towel-bed_spread";
 
 type Group = { label: string; images: string[] };
 
@@ -15,10 +38,35 @@ const galleries: Record<string, Group[]> = {
     knit: [
         {label: "T-shirts", images: tshirt},
         {label: "Fleece", images: fleece},
+        {label: "Others", images: knit_others},
+
     ],
-    woven: [],
-    sweater: [],
-    "homewear-other": [],
+    woven: [
+        {label: "Cargo", images: woven_cargo},
+        {label: "Jacket", images: woven_jacket},
+        {label: "Shirt", images: woven_shirt},
+        {label: "Shorts", images: woven_shorts},
+        {label: "Trouser", images: woven_trousers},
+        {label: "Others", images: woven_others},
+    ],
+    sweater: [
+        {label: "Baby", images: sweater_baby},
+        {label: "Long", images: sweater_long},
+        {label: "Others", images: sweater_others},
+    ],
+    denim: [
+        {label: "Jacket", images: denim_jacket},
+        {label: "Ladies", images: denim_ladies},
+        {label: "Shorts", images: denim_shorts},
+        {label: "Long", images: denim_long},
+        {label: "Pants", images: denim_pant},
+        {label: "Others", images: denim_others},
+    ],
+    "hometextile-other": [
+        {label: "Terry Kitchen", images: towel_terry_kitchen},
+        {label: "Bed Spread", images: towel_bed_spread},
+        {label: "Others", images: towel_others},
+    ],
 };
 
 export default function ProductPage() {
