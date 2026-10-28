@@ -5,15 +5,19 @@ import PageHeader from "../components/pageheader.tsx";
 import {Reveal} from "../components/reveal.tsx";
 import {getProduct} from "../components/site.ts";
 
-import {tshirt} from "../assets/img/tshirt";
-import {fleece} from "../assets/img/fleece";
+import {knit_tshirt} from "../assets/img/knit-tshirt";
+import {knit_fleece} from "../assets/img/knit-fleece";
+import {knit_polo} from "../assets/img/knit-polo";
 import {knit_others} from "../assets/img/knit-others";
+import {knit_hoodie} from "../assets/img/knit-hoodie";
+import {knit_trouser} from "../assets/img/knit-trouser";
+import {knit_sweatshirt} from "../assets/img/knit-sweatshirt";
+import {knit_shorts} from "../assets/img/knit-shorts";
 
-import {woven_cargo} from "../assets/img/woven-cargo";
 import {woven_others} from "../assets/img/woven-others";
 import {woven_shirt} from "../assets/img/woven-shirt";
 import {woven_jacket} from "../assets/img/woven-jacket";
-import {woven_trousers} from "../assets/img/woven-trousers";
+import {woven_long_pant} from "../assets/img/woven-long_pant";
 import {woven_shorts} from "../assets/img/woven-shorts";
 
 import {sweater_baby} from "../assets/img/sweater-baby";
@@ -22,31 +26,49 @@ import {sweater_others} from "../assets/img/sweater-others";
 
 import {denim_jacket} from "../assets/img/denim-jacket";
 import {denim_ladies} from "../assets/img/denim-ladies";
-import {denim_long} from "../assets/img/denim-long";
+import {denim_long_pant} from "../assets/img/denim-long_pant";
 import {denim_shorts} from "../assets/img/denim-shorts";
-import {denim_pant} from "../assets/img/denim-pant";
+import {denim_shirt} from "../assets/img/denim-shirt";
 import {denim_others} from "../assets/img/denim-others";
 
 import {towel_terry_kitchen} from "../assets/img/towel-terry_kitchen";
 import {towel_others} from "../assets/img/towel-others";
 import {towel_bed_spread} from "../assets/img/towel-bed_spread";
 
-type Group = { label: string; images: string[] };
+import {comboSets} from "../assets/img/sets";
+
+type Group = {
+    id: string;
+    label: string;
+    images: string[];
+    kind: "category" | "set";
+};
+
+// Display names for the category slugs used in set folder names.
+const CATEGORY_NAMES: Record<string, string> = {
+    knit: "Knit",
+    woven: "Woven",
+    sweater: "Sweater",
+    denim: "Denim",
+};
 
 // Add more groups/categories here as you add image folders.
-const galleries: Record<string, Group[]> = {
+const galleries: Record<string, { label: string; images: string[] }[]> = {
     knit: [
-        {label: "T-shirts", images: tshirt},
-        {label: "Fleece", images: fleece},
+        {label: "T-shirts", images: knit_tshirt},
+        {label: "Polo", images: knit_polo},
+        {label: "Hoodie", images: knit_hoodie},
+        {label: "Sweatshirt", images: knit_sweatshirt},
+        {label: "Trouser", images: knit_trouser},
+        {label: "Fleece", images: knit_fleece},
+        {label: "Shorts", images: knit_shorts},
         {label: "Others", images: knit_others},
-
     ],
     woven: [
-        {label: "Cargo", images: woven_cargo},
         {label: "Jacket", images: woven_jacket},
         {label: "Shirt", images: woven_shirt},
         {label: "Shorts", images: woven_shorts},
-        {label: "Trouser", images: woven_trousers},
+        {label: "Long Pant", images: woven_long_pant},
         {label: "Others", images: woven_others},
     ],
     sweater: [
@@ -58,8 +80,8 @@ const galleries: Record<string, Group[]> = {
         {label: "Jacket", images: denim_jacket},
         {label: "Ladies", images: denim_ladies},
         {label: "Shorts", images: denim_shorts},
-        {label: "Long", images: denim_long},
-        {label: "Pants", images: denim_pant},
+        {label: "Long Pant", images: denim_long_pant},
+        {label: "Shirt", images: denim_shirt},
         {label: "Others", images: denim_others},
     ],
     "hometextile-other": [
@@ -69,24 +91,55 @@ const galleries: Record<string, Group[]> = {
     ],
 };
 
+// Own groups of a category + every combo set that includes this category.
+function getGroups(slug?: string): Group[] {
+    if (!slug) return [];
+
+    const own: Group[] = (galleries[slug] ?? []).map((g) => ({
+        id: `cat:${g.label}`,
+        label: g.label,
+        images: g.images,
+        kind: "category",
+    }));
+
+    const sets: Group[] = comboSets
+        .filter((s) => s.categories.includes(slug))
+        .map((s) => ({
+            id: `set:${s.id}`,
+            label: s.categories.map((c) => CATEGORY_NAMES[c] ?? c).join(" + "),
+            images: s.images,
+            kind: "set",
+        }));
+
+    return [...own, ...sets];
+}
+
+const ALL = "all";
+const ALL_SETS = "sets";
+
 export default function ProductPage() {
     const {slug} = useParams();
     const product = getProduct(slug);
-    const groups = (slug && galleries[slug]) || [];
 
-    const [active, setActive] = useState<string>("All");
+    const groups = useMemo(() => getGroups(slug), [slug]);
+    const categoryGroups = useMemo(() => groups.filter((g) => g.kind === "category"), [groups]);
+    const setGroups = useMemo(() => groups.filter((g) => g.kind === "set"), [groups]);
+
+    const [active, setActive] = useState<string>(ALL);
     const [lightbox, setLightbox] = useState<number | null>(null);
 
     const images = useMemo(() => {
-        if (active === "All") return groups.flatMap((g) => g.images.map((src) => ({src, label: g.label})));
-        const g = groups.find((x) => x.label === active);
-        return (g?.images ?? []).map((src) => ({src, label: g!.label}));
-    }, [groups, active]);
+        let selected = groups;
+        if (active === ALL_SETS) selected = setGroups;
+        else if (active !== ALL) selected = groups.filter((g) => g.id === active);
+        return selected.flatMap((g) => g.images.map((src) => ({src, label: g.label})));
+    }, [groups, setGroups, active]);
 
     const total = groups.reduce((n, g) => n + g.images.length, 0);
+    const setsTotal = setGroups.reduce((n, g) => n + g.images.length, 0);
 
     useEffect(() => {
-        setActive("All");
+        setActive(ALL);
         setLightbox(null);
     }, [slug]);
 
@@ -126,6 +179,15 @@ export default function ProductPage() {
         );
     }
 
+    const tabClass = (isActive: boolean, tone: "navy" | "teal") => {
+        const activeBg = tone === "navy" ? "bg-[#1B4A72] text-white" : "bg-[#00707F] text-white";
+        const idle =
+            tone === "navy"
+                ? "bg-slate-100 text-[#1B4A72] hover:bg-slate-200"
+                : "border border-[#00707F]/40 bg-white text-[#00707F] hover:bg-[#00707F]/10";
+        return `px-5 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${isActive ? activeBg : idle}`;
+    };
+
     return (
         <>
             <PageHeader
@@ -142,24 +204,54 @@ export default function ProductPage() {
                     ) : (
                         <>
                             {groups.length > 1 && (
-                                <div className="mb-10 flex flex-wrap justify-center gap-3">
-                                    {[{label: "All", count: total}, ...groups.map((g) => ({
-                                        label: g.label,
-                                        count: g.images.length
-                                    }))].map((t) => (
+                                <div className="mb-10 space-y-4">
+                                    <div className="flex flex-wrap justify-center gap-3">
                                         <button
-                                            key={t.label}
                                             type="button"
-                                            onClick={() => setActive(t.label)}
-                                            className={`px-5 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
-                                                active === t.label
-                                                    ? "bg-[#1B4A72] text-white"
-                                                    : "bg-slate-100 text-[#1B4A72] hover:bg-slate-200"
-                                            }`}
+                                            onClick={() => setActive(ALL)}
+                                            className={tabClass(active === ALL, "navy")}
                                         >
-                                            {t.label} <span className="opacity-60">({t.count})</span>
+                                            All <span className="opacity-60">({total})</span>
                                         </button>
-                                    ))}
+                                        {categoryGroups.map((g) => (
+                                            <button
+                                                key={g.id}
+                                                type="button"
+                                                onClick={() => setActive(g.id)}
+                                                className={tabClass(active === g.id, "navy")}
+                                            >
+                                                {g.label} <span className="opacity-60">({g.images.length})</span>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {setGroups.length > 0 && (
+                                        <div className="flex flex-wrap items-center justify-center gap-3">
+                                            <span
+                                                className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                                                Sets
+                                            </span>
+                                            {setGroups.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActive(ALL_SETS)}
+                                                    className={tabClass(active === ALL_SETS, "teal")}
+                                                >
+                                                    All Sets <span className="opacity-60">({setsTotal})</span>
+                                                </button>
+                                            )}
+                                            {setGroups.map((g) => (
+                                                <button
+                                                    key={g.id}
+                                                    type="button"
+                                                    onClick={() => setActive(g.id)}
+                                                    className={tabClass(active === g.id, "teal")}
+                                                >
+                                                    {g.label} <span className="opacity-60">({g.images.length})</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
